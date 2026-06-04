@@ -15,7 +15,7 @@
 
 ### 2. 플레이어 조종 (PlayerController)
 - `PrintChat` : 입력된 채팅을 서버로 보냅니다.
-- `Server RPC`: 클라이언트에서 전달된 입력을 서버로 전달하여 GameMode에서 검증 및 계산을 수행합니다.
+- `Server RPC`: 클라이언트에서 전달된 입력을 GameMode에 전달하여 검증 및 계산을 수행합니다.
 - `Client RPC`: GameMode에서 계산된 결과 메시지를 받습니다.
 - `ChatInputText`: 결과 메세지를 출력하도록 합니다.  
 
