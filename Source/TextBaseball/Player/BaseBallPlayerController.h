@@ -8,6 +8,7 @@
 
 class UTextInputUserWidget;
 class UMainLogUserWidget;
+class UAlarmUIWidget;
 
 /**
  * 
@@ -25,6 +26,14 @@ public:
 
     // 채팅결과 출력(보통 게임모드에서 호출함)
     void ChatInputText(const FString& InputChatString);
+
+    // 서버 알람 출력(무조건 클라에서 받는형식이어야함)
+    UFUNCTION(Client, Reliable)
+    void ClientRPCPrintAlart(const FString& InputChatString);
+
+    // 알람에서 시간업데이트
+    UFUNCTION(Client, Reliable)
+    void ClientRPCPrintTime(const FString& InputChatString);
 
     // 클라
     UFUNCTION(Client, Reliable)
@@ -50,6 +59,15 @@ protected:
     UPROPERTY()
     TObjectPtr<UMainLogUserWidget> MainLogWidgetInstance;
     // =========
+
+    // ========= 알람 전송UI
+    UPROPERTY(EditDefaultsOnly)
+    TSubclassOf<UAlarmUIWidget> AlartWidgetClass;
+
+    UPROPERTY()
+    TObjectPtr<UAlarmUIWidget> AlartWidgetInstance;
+    // =========
+
 
     FString ChatMessageString;
 

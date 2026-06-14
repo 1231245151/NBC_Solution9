@@ -5,6 +5,7 @@
 
 #include "TextBaseball/UI/TextInputUserWidget.h"
 #include "TextBaseball/UI/MainLogUserWidget.h"
+#include "TextBaseball/UI/AlarmUIWidget.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "TextBaseball/TextBaseball.h"
@@ -45,6 +46,15 @@ void ABaseBallPlayerController::BeginPlay()
             MainLogWidgetInstance->AddToViewport();
         }
     }
+
+    if (IsValid(AlartWidgetClass))
+    {
+        AlartWidgetInstance = CreateWidget<UAlarmUIWidget>(this, AlartWidgetClass);
+        if (IsValid(AlartWidgetInstance))
+        {
+            AlartWidgetInstance->AddToViewport();
+        }
+    }
 }
 
 void ABaseBallPlayerController::PrintChat(const FString& InChatMessageString)
@@ -61,6 +71,23 @@ void ABaseBallPlayerController::ChatInputText(const FString& InputChatString)
     if (MainLogWidgetInstance)
     {
         MainLogWidgetInstance->AddLogMessage(InputChatString);
+    }
+}
+
+void ABaseBallPlayerController::ClientRPCPrintTime_Implementation(const FString& InputChatString)
+{
+    if (AlartWidgetInstance)
+    {
+        AlartWidgetInstance->TimePrint(InputChatString);
+    }
+}
+
+void ABaseBallPlayerController::ClientRPCPrintAlart_Implementation(const FString& InputChatString)
+{
+    // 알람
+    if (AlartWidgetInstance)
+    {
+        AlartWidgetInstance->AlartPrint(InputChatString);
     }
 }
 

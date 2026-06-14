@@ -7,7 +7,7 @@
 #include "BaseBallGameModeBase.generated.h"
 
 class ABaseBallPlayerController;
-
+class ABaseBallGameStateBase;
 /**
  * 
  */
@@ -58,18 +58,49 @@ public:
 
     // 게임재시작 함수
     void ReStartGame();
-
-
     //================
 
+    //========= 매 시간마다 갱신용
+    void OnMainTimerElapsed();
+
+    void TaskTimeWait(ABaseBallGameStateBase* Gamestate);
+    void TaskTimePlay(ABaseBallGameStateBase* Gamestate);
+
+    //================
+    void AlartAllPlayer(const FString& String);
+
+    void PassTurnToNextPlayer();
+
 protected:
+    // 무작위 숫자
     FString SecretNumberString;
 
+    // 숫자가 몇자리인지
     int32 EssentialStrike;
 
+    // 플레이어 목록
     TArray<TObjectPtr<ABaseBallPlayerController>> AllPlayers;
 
+    // 해당 라운드 승자 플레이어
     TObjectPtr<ABaseBallPlayerController> WinnerPlayerController;
 
+    // 게임종료를 확인
     bool bIsFinish;
+
+    FTimerHandle MainTimerHandle;
+
+    // 입력까지 시간
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+    float RimitTime = 10.f;
+
+    // 기다리는 시간
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float WaitTime = 10.f;
+
+    // 남은 시간타이머
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+    float RemainingTime = 0.f;
+
+    // 입력이 실행되엇나 판단을 위한 변수
+    bool bHasInputThisTurn = false;
 };
