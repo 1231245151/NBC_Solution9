@@ -32,3 +32,15 @@ void UAlarmUIWidget::TimePrint(const FString& Text)
 
 }
 
+void UAlarmUIWidget::DebugTime(const FString& Text)
+{
+    APlayerController* OwningPlayerController = GetOwningPlayer();
+    if (IsValid(OwningPlayerController) == true)
+    {
+        if (TextBox_DebugTimeText)
+        {
+            TextBox_DebugTimeText->SetText(FText::FromString(Text));
+        }
+    }
+}
+

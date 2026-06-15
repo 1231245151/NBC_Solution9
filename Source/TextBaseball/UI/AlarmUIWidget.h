@@ -21,6 +21,8 @@ public:
     void AlartPrint(const FString& Text);
 
     void TimePrint(const FString& Text);
+
+    void DebugTime(const FString& Text);
 protected:
 
 public:
@@ -29,4 +31,7 @@ public:
 
     UPROPERTY(meta = (BindWidget))
     TObjectPtr<UTextBlock> TextBox_TimeText;
+
+    UPROPERTY(meta = (BindWidget))
+    TObjectPtr<UTextBlock> TextBox_DebugTimeText;
 };

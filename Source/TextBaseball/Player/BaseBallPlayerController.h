@@ -21,6 +21,14 @@ class TEXTBASEBALL_API ABaseBallPlayerController : public APlayerController
 public:
     virtual void BeginPlay() override;
 
+    virtual void Tick(float DeltaTime) override;
+    // 그 당시 서버가 준 초기 타이머 값
+    float InitialTurnDuration = 0.f;
+
+    // 시간 테스트용 변수
+    float LastServerTime = 0.f;
+    float LastClientUpdateTime = 0.f;
+
     // 채팅입력 받은거(보통 입력ui에서 넣어줌, 서버 RPC를 호출)
     void PrintChat(const FString& InChatMessageString);
 

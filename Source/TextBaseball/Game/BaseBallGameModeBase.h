@@ -103,4 +103,7 @@ protected:
 
     // 입력이 실행되엇나 판단을 위한 변수
     bool bHasInputThisTurn = false;
+
+    // 타이머 종료 시간 (실제 시간 기반)
+    float EndTime = 0.f;
 };

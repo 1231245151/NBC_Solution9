@@ -37,6 +37,7 @@ void ABaseBallGameModeBase::BeginPlay()
 
     // 로직 타이머 시작
     RemainingTime = WaitTime;
+    EndTime = GetWorld()->GetTimeSeconds() + WaitTime;
     GetWorld()->GetTimerManager().SetTimer(MainTimerHandle, this, &ABaseBallGameModeBase::OnMainTimerElapsed, 0.5f, true, 0.f);
 }
 
@@ -276,6 +277,7 @@ void ABaseBallGameModeBase::GameStart()
     {
         BBGameState->CurrentPlayerIndex = 0;
         RemainingTime = RimitTime;
+        EndTime = GetWorld()->GetTimeSeconds() + RimitTime;
         BBGameState->ServerRemainingTime = RemainingTime;
         BBGameState->MatchState = EMatchState::Playing;
     }
@@ -438,9 +440,10 @@ void ABaseBallGameModeBase::OnMainTimerElapsed()
 void ABaseBallGameModeBase::TaskTimeWait(ABaseBallGameStateBase* Gamestate)
 {
     // 대기시간 갱신과 표시
-    RemainingTime -= 0.5f;
-    FString AlartString = FString::Printf(TEXT(""));
-    AlartString = FString::Printf(TEXT("Wait %.1f seconds for playing."), RemainingTime);
+    RemainingTime = EndTime - GetWorld()->GetTimeSeconds();
+    if (RemainingTime < 0) RemainingTime = 0;
+
+    FString AlartString = FString::Printf(TEXT("Wait %.1f seconds for playing."), RemainingTime);
 
     // 대기시간이 끝이면 플레이로 변경
     if (RemainingTime <= 0)
@@ -464,8 +467,6 @@ void ABaseBallGameModeBase::TaskTimeWait(ABaseBallGameStateBase* Gamestate)
         }
     }
 
-
-
     // 모든플레이어에게 알람줌
     AlartAllPlayer(AlartString);
 }
@@ -478,7 +479,9 @@ void ABaseBallGameModeBase::TaskTimePlay(ABaseBallGameStateBase* Gamestate)
 
     // 매시간마다 각 플레이어 타이머 작동
     // 남은 시간을 GameState에 갱신시켜서 클라가 원하면 꺼내쓸수 잇도록한다.
-    RemainingTime -= 0.5f;
+    RemainingTime = EndTime - GetWorld()->GetTimeSeconds();
+    if (RemainingTime < 0) RemainingTime = 0;
+
     Gamestate->ServerRemainingTime = RemainingTime;
 
     // 타이머가 0이되면 다음 플레이어
@@ -550,6 +553,7 @@ void ABaseBallGameModeBase::PassTurnToNextPlayer()
 
     // 시간,턴 변수 초기화
     RemainingTime = RimitTime;
+    EndTime = GetWorld()->GetTimeSeconds() + RimitTime;
     BBGameState->ServerRemainingTime = RemainingTime;
     bHasInputThisTurn = false;
 
